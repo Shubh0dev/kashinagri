@@ -12,8 +12,11 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
 
   images: {
-    // Static export has no image optimization server; disable it
-    unoptimized: true,
+    // Custom loader that prepends basePath for local images in static export.
+    // next/image with unoptimized:true writes src verbatim into HTML, bypassing basePath.
+    // The loader prepends NEXT_PUBLIC_BASE_PATH (/kashinagri in prod, empty in dev).
+    loader: "custom",
+    loaderFile: "./src/lib/imageLoader.ts",
     remotePatterns: [
       {
         protocol: "https",
